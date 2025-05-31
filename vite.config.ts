@@ -21,6 +21,9 @@ export default defineConfig({
       outdir: "./src/lib/paraglide",
     }),
   ],
+  // Fix an issue resolving `.svelte` files during development.
+  // https://github.com/wobsoriano/svelte-sonner/issues/38#issuecomment-2422136477
+  optimizeDeps: { include: ["svelte-sonner"] },
   test: {
     workspace: [
       {

@@ -1,8 +1,18 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { X } from "@lucide/svelte"
+  import { Share, X } from "@lucide/svelte"
+  import { toast } from "svelte-sonner"
+  import copy from "copy-to-clipboard"
 
   let { data } = $props()
+
+  function copyShareLink() {
+    if (copy(window.location.href)) {
+      toast("Copied link to clipboard!")
+    } else {
+      toast("Could not copy link to clipboard. Try again later.")
+    }
+  }
 </script>
 
 <header
@@ -11,9 +21,19 @@
   <h2 class="text-sm font-medium text-neutral-400 dark:text-neutral-600">
     Gathering
   </h2>
-  <Button variant="secondary" href="/" size="icon" class="size-7 rounded-full"
-    ><X /></Button
-  >
+  <div class="flex items-center gap-2">
+    <Button
+      variant="ghost"
+      onclick={copyShareLink}
+      size="icon"
+      class="size-7 rounded-full"
+    >
+      <Share />
+    </Button>
+    <Button variant="secondary" href="/" size="icon" class="size-7 rounded-full"
+      ><X /></Button
+    >
+  </div>
 </header>
 <main class="space-y-4 p-4">
   {#await data.gathering}
