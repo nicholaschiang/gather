@@ -1,7 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms"
-  import Button from "$lib/components/ui/button/button.svelte";
- 
+  import { Button } from "$lib/components/ui/button"
+
   let { data } = $props()
 </script>
 
@@ -10,14 +10,17 @@
 <form method="post" action="?/logout" use:enhance>
   <Button type="submit">Sign out</Button>
 </form>
-{#await data.events}
-  <p>Loading events...</p>
-{:then events}
+
+{#await data.gatherings}
+  <p>Loading gatherings...</p>
+{:then gatherings}
   <ul>
-    {#each events as event}
-      <li>{event.start?.dateTime ?? event.start?.date} - {event.summary}</li>
+    {#each gatherings as gathering}
+      <li>{gathering.title}</li>
     {/each}
   </ul>
 {:catch error}
-  <p>Error loading events: {error.message}</p>
+  <p>Error loading gatherings: {error.message}</p>
 {/await}
+
+<Button href="/new">New gathering</Button>

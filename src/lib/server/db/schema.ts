@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core"
+import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core"
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
@@ -23,27 +23,30 @@ export const session = sqliteTable("session", {
 })
 export type Session = typeof session.$inferSelect
 
-/*
- *
- *export const gathering = sqliteTable("gathering", {
- *  id: text("id").primaryKey(),
- *  name: text("name").notNull(),
- *  description: text("description"),
- *  start: integer("start", { mode: "timestamp" }).notNull(),
- *  end: integer("end", { mode: "timestamp" }).notNull(),
- *  creatorId: text("creator_id").notNull().references(() => user.id),
- *})
- *export type Gathering = typeof gathering.$inferSelect
- *
- *export const relGatheringUser = sqliteTable("rel_gathering_user", {
- *  gatheringId: text("gathering_id")
- *    .notNull()
- *    .references(() => gathering.id),
- *  userId: text("user_id")
- *    .notNull()
- *    .references(() => user.id),
- *}, (table) => ([
- *    primaryKey({ columns: [table.gatheringId, table.userId] })
- *]))
- *export type RelGatheringUser = typeof relGatheringUser.$inferSelect
- */
+export const gathering = sqliteTable("gathering", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  start: integer("start", { mode: "timestamp" }),
+  end: integer("end", { mode: "timestamp" }),
+  creatorId: text("creator_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+})
+export type Gathering = typeof gathering.$inferSelect
+
+export const relUserGathering = sqliteTable(
+  "rel_user_gathering",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    gatheringId: text("gathering_id")
+      .notNull()
+      .references(() => gathering.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.gatheringId] })],
+)
