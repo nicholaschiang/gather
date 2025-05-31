@@ -1,14 +1,6 @@
 import { google, type Auth } from "googleapis"
 import { redirect } from "@sveltejs/kit"
 
-import creds from "$lib/credentials.json"
-
-const authClient = new google.auth.OAuth2(
-  creds.web.client_id,
-  creds.web.client_secret,
-  creds.web.redirect_uris[0],
-)
-
 export async function load(event) {
   if (!event.locals.user) {
     return redirect(302, "/login")
@@ -16,6 +8,11 @@ export async function load(event) {
   // TODO Perhaps we should store the access_token and other values to make this
   // more efficient? Right now, we refresh the access token every time.
   const tokens = { refresh_token: event.locals.user.googleRefreshToken }
+  const authClient = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URI,
+  )
   authClient.setCredentials(tokens)
   const events = listEvents(authClient)
   return { events }

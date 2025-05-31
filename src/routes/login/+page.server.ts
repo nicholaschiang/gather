@@ -1,12 +1,5 @@
 import { google } from "googleapis"
 
-import creds from "$lib/credentials.json"
-
-const authClient = new google.auth.OAuth2(
-  creds.web.client_id,
-  creds.web.client_secret,
-  creds.web.redirect_uris[0],
-)
 const scopes = [
   "openid",
   "profile",
@@ -19,6 +12,11 @@ const scopes = [
 
 export async function load() {
   // Generate a url that asks permissions for the Drive activity and Google Calendar scope
+  const authClient = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URI,
+  )
   const authorizationUrl = authClient.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
     access_type: "offline",

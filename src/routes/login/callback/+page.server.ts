@@ -8,14 +8,6 @@ import { db } from "$lib/server/db"
 import * as table from "$lib/server/db/schema"
 import { v4 as uuid } from "uuid"
 
-import creds from "$lib/credentials.json"
-
-const authClient = new google.auth.OAuth2(
-  creds.web.client_id,
-  creds.web.client_secret,
-  creds.web.redirect_uris[0],
-)
-
 // TODO: Get this from Google.
 // https://www.googleapis.com/oauth2/v3/certs
 const keys = {
@@ -61,6 +53,11 @@ export async function load(event) {
   } else if (code == null) {
     console.error("No authorization code found.")
   } else {
+    const authClient = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_REDIRECT_URI,
+    )
     const { tokens } = await authClient.getToken(code)
 
     if (tokens.id_token == null) throw new Error("No ID token found.")
