@@ -5,7 +5,7 @@
   let { data } = $props()
 </script>
 
-<main class="space-y-4 p-4">
+<main class="mx-auto max-w-xl space-y-4 p-4">
   <header class="flex justify-between">
     <span class="text-xl font-black italic">G</span>
     <form method="post" action="?/logout" use:enhance>
@@ -31,8 +31,11 @@
     <p>Loading gatherings...</p>
   {:then gatherings}
     {#each gatherings as gathering}
-      <a class="flex flex-col rounded border p-4 relative overflow-hidden" href="/g/{gathering.id}">
-        <span class="absolute inset-y-0 left-0 w-1 bg-primary/20"></span>
+      <a
+        class="relative flex flex-col overflow-hidden rounded border p-4"
+        href="/g/{gathering.id}"
+      >
+        <span class="bg-primary/20 absolute inset-y-0 left-0 w-1"></span>
         <span class="font-medium">{gathering.title}</span>
         {#if gathering.description}<span
             class="text-sm text-neutral-400 dark:text-neutral-600"
