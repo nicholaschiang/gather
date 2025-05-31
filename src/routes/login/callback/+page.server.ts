@@ -67,6 +67,8 @@ export async function load(event) {
     const key = { key: keys.keys[0], format: "jwk" as const }
     const decoded = jwt.verify(tokens.id_token, key)
     const idToken = idTokenSchema.parse(decoded)
+    console.log('decoded', decoded)
+    console.log('idToken', idToken)
 
     const results = await db
       .select()
@@ -74,6 +76,7 @@ export async function load(event) {
       .where(eq(table.user.email, idToken.email))
 
     const existingUser = results.at(0)
+    console.log('existingUser', existingUser)
     if (existingUser) {
       // Update the user's refresh token.
       if (tokens.refresh_token != null)
@@ -94,8 +97,13 @@ export async function load(event) {
       const userId = uuid()
       await db.insert(table.user).values({
         id: userId,
+        picture: idToken.picture,
+        givenName: idToken.given_name,
+        familyName: idToken.family_name,
+        name: idToken.name,
+        email: idToken.email,
+        emailVerified: idToken.email_verified,
         googleRefreshToken: tokens.refresh_token,
-        ...idToken,
       })
 
       const sessionToken = auth.generateSessionToken()
