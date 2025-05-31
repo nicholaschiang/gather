@@ -1,5 +1,6 @@
 import { google, type Auth } from "googleapis"
 import { redirect } from "@sveltejs/kit"
+import { env } from "$env/dynamic/private"
 
 export async function load(event) {
   if (!event.locals.user) {
@@ -9,9 +10,9 @@ export async function load(event) {
   // more efficient? Right now, we refresh the access token every time.
   const tokens = { refresh_token: event.locals.user.googleRefreshToken }
   const authClient = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI,
+    env.GOOGLE_CLIENT_ID,
+    env.GOOGLE_CLIENT_SECRET,
+    env.GOOGLE_REDIRECT_URI,
   )
   authClient.setCredentials(tokens)
   const events = listEvents(authClient)

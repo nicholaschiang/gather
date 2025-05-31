@@ -1,4 +1,5 @@
 import { google } from "googleapis"
+import { env } from "$env/dynamic/private"
 
 const scopes = [
   "openid",
@@ -13,9 +14,9 @@ const scopes = [
 export async function load() {
   // Generate a url that asks permissions for the Drive activity and Google Calendar scope
   const authClient = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI,
+    env.GOOGLE_CLIENT_ID,
+    env.GOOGLE_CLIENT_SECRET,
+    env.GOOGLE_REDIRECT_URI,
   )
   const authorizationUrl = authClient.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
