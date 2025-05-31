@@ -23,9 +23,6 @@ export async function load() {
     // 'online' (default) or 'offline' (gets refresh_token)
     access_type: "offline",
     scope: scopes,
-    // We need the prompt=consent to get a refresh token on every login. 
-    // Otherwise, Google will return a refresh token only on the first login.
-    prompt: "consent",
     // Enable incremental authorization. Recommended as a best practice.
     include_granted_scopes: true,
     // TODO: Include the state parameter to reduce the risk of CSRF attacks.
