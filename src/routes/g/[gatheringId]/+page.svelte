@@ -16,7 +16,7 @@
 </script>
 
 <header
-  class="bg-background sticky top-0 flex items-center justify-between px-4 pt-4"
+  class="bg-background sticky top-0 flex items-center justify-between px-4 pt-4 lg:max-w-xl lg:mx-auto"
 >
   <h2 class="text-sm font-medium text-neutral-400 dark:text-neutral-600">
     Gathering
@@ -35,12 +35,12 @@
     >
   </div>
 </header>
-<main class="space-y-4 p-4">
+<main class="space-y-4 p-4 lg:max-w-xl lg:mx-auto">
   {#await data.gathering}
     <p>Loading gathering...</p>
   {:then gathering}
     <h1 class="text-xl">{gathering.title}</h1>
-    <hr class="-mr-4" />
+    <hr class="-mr-4 lg:mr-0" />
     <p>{gathering.description}</p>
   {:catch error}
     <p>Error loading gathering: {error.message}</p>
