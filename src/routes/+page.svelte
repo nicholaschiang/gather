@@ -1,13 +1,14 @@
 <script lang="ts">
   import { enhance } from "$app/forms"
   import { Button } from "$lib/components/ui/button"
+  import { ShinyText } from '$lib/components/ui/shiny-text'
 
   let { data } = $props()
 </script>
 
 <main class="mx-auto max-w-xl space-y-4 p-4">
   <header class="flex justify-between">
-    <span class="text-xl font-black italic">G</span>
+    <ShinyText class="text-2xl font-black">G</ShinyText>
     <form method="post" action="?/logout" use:enhance>
       <Button
         type="submit"
