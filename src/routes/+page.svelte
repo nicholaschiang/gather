@@ -1,13 +1,14 @@
 <script lang="ts">
   import { enhance } from "$app/forms"
-
+  import Button from "$lib/components/ui/button/button.svelte";
+ 
   let { data } = $props()
 </script>
 
 <h1>Hi, {data.user.email}!</h1>
 <p>Your user ID is {data.user.id}.</p>
 <form method="post" action="?/logout" use:enhance>
-  <button>Sign out</button>
+  <Button type="submit">Sign out</Button>
 </form>
 {#await data.events}
   <p>Loading events...</p>
