@@ -79,6 +79,13 @@ export async function load(event) {
 
     const existingUser = results.at(0)
     if (existingUser) {
+      // Update the user's refresh token.
+      if (tokens.refresh_token != null)
+        await db
+          .update(table.user)
+          .set({ googleRefreshToken: tokens.refresh_token })
+          .where(eq(table.user.id, existingUser.id))
+
       // Check if a user already exists with this email address.
       const sessionToken = auth.generateSessionToken()
       const session = await auth.createSession(sessionToken, existingUser.id)
@@ -89,20 +96,18 @@ export async function load(event) {
 
       // Register a new user with their information.
       const userId = uuid()
-      await db
-        .insert(table.user)
-        .values({
-          id: userId,
-          googleRefreshToken: tokens.refresh_token,
-          ...idToken,
-        })
+      await db.insert(table.user).values({
+        id: userId,
+        googleRefreshToken: tokens.refresh_token,
+        ...idToken,
+      })
 
       const sessionToken = auth.generateSessionToken()
       const session = await auth.createSession(sessionToken, userId)
       auth.setSessionTokenCookie(event, sessionToken, session.expiresAt)
     }
   }
-  return redirect(302, "/demo/lucia")
+  return redirect(302, "/")
 }
 
 /**
