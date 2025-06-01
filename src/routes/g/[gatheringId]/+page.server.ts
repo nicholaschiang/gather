@@ -1,8 +1,8 @@
 import { db } from "$lib/server/db"
 import { redirectToGoogle } from "$lib/server/google"
 import * as table from "$lib/server/db/schema"
-import { eq } from "drizzle-orm"
-import { error } from "@sveltejs/kit"
+import { eq, and } from "drizzle-orm"
+import { redirect, error } from "@sveltejs/kit"
 import { alias } from "drizzle-orm/sqlite-core"
 
 function isNotNull<T>(value: T | null): value is T {
@@ -42,5 +42,29 @@ export const actions = {
       userId: event.locals.user.id,
       gatheringId: event.params.gatheringId,
     })
+  },
+  delete: async (event) => {
+    if (!event.locals.user) error(401)
+    await db
+      .delete(table.gathering)
+      .where(
+        and(
+          eq(table.gathering.id, event.params.gatheringId),
+          eq(table.gathering.creatorId, event.locals.user.id),
+        ),
+      )
+    redirect(302, "/")
+  },
+  leave: async (event) => {
+    if (!event.locals.user) error(401)
+    await db
+      .delete(table.relUserGathering)
+      .where(
+        and(
+          eq(table.relUserGathering.gatheringId, event.params.gatheringId),
+          eq(table.relUserGathering.userId, event.locals.user.id),
+        ),
+      )
+    redirect(302, "/")
   },
 }

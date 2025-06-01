@@ -1,16 +1,28 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button"
+  import { Button, buttonVariants } from "$lib/components/ui/button"
   import { Google } from "$lib/components/icons/google"
-  import { Clock, PartyPopper, Share, User, X } from "@lucide/svelte"
+  import {
+    Clock,
+    DoorOpen,
+    MoreHorizontal,
+    PartyPopper,
+    Share,
+    Trash,
+    User,
+    X,
+  } from "@lucide/svelte"
   import { toast } from "svelte-sonner"
   import copy from "copy-to-clipboard"
   import { enhance } from "$app/forms"
   import * as Avatar from "$lib/components/ui/avatar"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { type User as UserT } from "$lib/server/db/schema"
 
   let { data } = $props()
   let { user } = data
-  let participantCount = data.attendees.length + 1
+  let participantCount = $derived(data.attendees.length + 1)
+  let showDeleteButton = $derived(user?.id === data.gathering.creatorId)
+  let showLeaveButton = $derived(data.attendees.some((a) => a.id === user?.id))
 
   function copyShareLink() {
     if (copy(window.location.href)) {
@@ -28,6 +40,41 @@
     Gathering
   </h2>
   <div class="flex items-center gap-2">
+    {#if showDeleteButton || showLeaveButton}
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger
+          class={buttonVariants({
+            variant: "ghost",
+            size: "icon",
+            class: "size-7 rounded-full",
+          })}
+        >
+          <MoreHorizontal />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content class="w-48">
+          {#if showDeleteButton}
+            <form method="POST" action="?/delete" use:enhance>
+              <button type="submit" class="w-full">
+                <DropdownMenu.Item class="!text-destructive">
+                  <Trash class="text-destructive" />
+                  Delete gathering
+                </DropdownMenu.Item>
+              </button>
+            </form>
+          {/if}
+          {#if showLeaveButton}
+            <form method="POST" action="?/leave" use:enhance>
+              <button type="submit" class="w-full">
+                <DropdownMenu.Item class="!text-destructive">
+                  <DoorOpen class="text-destructive" />
+                  Leave gathering
+                </DropdownMenu.Item>
+              </button>
+            </form>
+          {/if}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    {/if}
     <Button
       variant="ghost"
       onclick={copyShareLink}
