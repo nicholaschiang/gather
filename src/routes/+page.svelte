@@ -31,8 +31,8 @@
   <div class="space-y-2">
     <h1 class="font-semibold">It's time to gather, {data.user.givenName}</h1>
     <p class="text-sm text-neutral-400 dark:text-neutral-600">
-      Solutions like Calendly help find 1-1 meeting times. <strong
-        class="font-black italic">Gather</strong
+      Solutions like Calendly help find 1-1 meeting times. <ShinyText
+        class="font-bold">Gather</ShinyText
       > helps find group meeting times (3+ people).
     </p>
   </div>
