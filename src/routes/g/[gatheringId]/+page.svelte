@@ -107,7 +107,7 @@
         <PartyPopper />
       {:else}
         <div>
-          {data.creator.givenName}'s invited you to join this gathering.
+          {data.creator.givenName} has invited you to join this gathering.
         </div>
         <form method="POST" action="?/join" use:enhance>
           {#if user}
