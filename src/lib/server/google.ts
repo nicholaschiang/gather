@@ -99,6 +99,10 @@ export async function handleGoogleCallback(event: RequestEvent) {
   //} else if (url.searchParams.get('state') !== state) {
   //console.error('State mismatch. Possible CSRF attack.')
 
+  // Delete the state once we read it. Ideally, we should use something like 
+  // Redis to store the state and set an expiry time so that state is ephemeral.
+  await db.delete(table.authState).where(eq(table.authState.id, stateId))
+
   const authClient = new google.auth.OAuth2(
     env.GOOGLE_CLIENT_ID,
     env.GOOGLE_CLIENT_SECRET,
