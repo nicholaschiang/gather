@@ -64,7 +64,8 @@
       href="/g/{gathering.id}"
     >
       <span class="relative w-1.5 flex-none self-stretch">
-        <span class="bg-primary/5 absolute inset-y-0 -right-2 left-0 -z-1"></span>
+        <span class="bg-primary/5 absolute inset-y-0 -right-2 left-0 -z-1"
+        ></span>
       </span>
       <div class="bg-background flex w-0 grow flex-col gap-2 rounded-md p-4">
         <span class="font-medium">{gathering.title}</span>
@@ -93,7 +94,7 @@
     </a>
   {/each}
 
-  <div>
+  <div class="flex justify-end">
     <Button href="/new">New</Button>
   </div>
 </main>
