@@ -23,6 +23,16 @@ export const session = sqliteTable("session", {
 })
 export type Session = typeof session.$inferSelect
 
+export const authState = sqliteTable("auth_state", {
+  id: text("id").primaryKey(),
+  redirectUrl: text("redirect_url").notNull(),
+  gatheringIdToJoin: text("gathering_id_to_join").references(
+    () => gathering.id,
+    { onDelete: "set null", onUpdate: "set null" },
+  ),
+})
+export type AuthState = typeof authState.$inferSelect
+
 export const gathering = sqliteTable("gathering", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),

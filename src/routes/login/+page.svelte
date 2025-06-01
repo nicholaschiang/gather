@@ -2,8 +2,7 @@
   import { Button } from "$lib/components/ui/button"
   import { Google } from "$lib/components/icons/google"
   import { ShinyText } from "$lib/components/ui/shiny-text"
-
-  let { data } = $props()
+  import { enhance } from "$app/forms"
 </script>
 
 <main
@@ -13,5 +12,7 @@
     <ShinyText class="text-8xl font-black">G</ShinyText>
     <h2 class="text-lg font-semibold">gather</h2>
   </header>
-  <Button href={data.authorizationUrl}><Google />Continue with Google</Button>
+  <form method="POST" action="?/login" use:enhance>
+    <Button type="submit"><Google />Continue with Google</Button>
+  </form>
 </main>

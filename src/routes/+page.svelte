@@ -1,7 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms"
   import { Button } from "$lib/components/ui/button"
-  import { ShinyText } from '$lib/components/ui/shiny-text'
+  import { ShinyText } from "$lib/components/ui/shiny-text"
 
   let { data } = $props()
 </script>

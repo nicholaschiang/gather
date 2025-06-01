@@ -12,7 +12,7 @@
 <form method="POST" use:enhance class="mx-auto max-w-xl space-y-4 p-4">
   <div class="space-y-2">
     <Label for="title">Title</Label>
-    <Input id="title" name="title" defaultvalue="Untitled Gathering" required />
+    <Input id="title" name="title" placeholder="Untitled Gathering" required />
   </div>
   <div class="space-y-2">
     <Label for="description">Description (Optional)</Label>
