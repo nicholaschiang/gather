@@ -121,7 +121,10 @@ export async function load(event) {
     creator: row.creator,
     gathering: row.gathering,
     attendees,
-    times: getPossibleMeetingTimes([row.creator, ...attendees]),
+    times:
+      event.locals.user?.id === row.gathering.creatorId
+        ? getPossibleMeetingTimes([row.creator, ...attendees])
+        : [],
   }
 }
 
