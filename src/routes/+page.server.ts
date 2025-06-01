@@ -2,16 +2,35 @@ import * as auth from "$lib/server/auth"
 import { fail, redirect } from "@sveltejs/kit"
 import { db } from "$lib/server/db"
 import * as table from "$lib/server/db/schema"
-import { eq } from "drizzle-orm"
+import { eq, or } from "drizzle-orm"
+import { alias } from "drizzle-orm/sqlite-core"
 
 export async function load(event) {
   if (!event.locals.user) {
     return redirect(302, "/login")
   }
-  const gatherings = db
-    .select()
+  const creator = alias(table.user, "creator")
+  const gatherings = await db
+    .selectDistinct({
+      id: table.gathering.id,
+      title: table.gathering.title,
+      description: table.gathering.description,
+      creatorId: table.gathering.creatorId,
+      creatorName: creator.name,
+      creatorPicture: creator.picture,
+    })
     .from(table.gathering)
-    .where(eq(table.gathering.creatorId, event.locals.user.id))
+    .innerJoin(creator, eq(creator.id, table.gathering.creatorId))
+    .leftJoin(
+      table.relUserGathering,
+      eq(table.relUserGathering.gatheringId, table.gathering.id),
+    )
+    .where(
+      or(
+        eq(table.gathering.creatorId, event.locals.user.id),
+        eq(table.relUserGathering.userId, event.locals.user.id),
+      ),
+    )
   return { user: event.locals.user, gatherings }
 }
 
