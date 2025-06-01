@@ -7,12 +7,11 @@
 
   let { data } = $props()
   let filter = $state<"all" | "created">("all")
-  let all = data.gatherings
-  let created = data.gatherings.filter((g) => g.creatorId === data.user.id)
+  let all = $derived(data.gatherings)
+  let created = $derived(
+    data.gatherings.filter((g) => g.creatorId === data.user.id),
+  )
   let gatherings = $derived(filter === "all" ? all : created)
-
-  $inspect(filter)
-  $inspect(gatherings)
 </script>
 
 <main class="mx-auto max-w-xl space-y-4 p-4">
