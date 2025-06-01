@@ -161,7 +161,7 @@
         {:then times}
           <p>Possible times</p>
           {#each times.slice(0, 3) as time}
-            <form method="POST" action="?/time">
+            <form method="POST" action="?/time" use:enhance>
               <input
                 type="hidden"
                 name="start"
