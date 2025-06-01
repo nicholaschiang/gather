@@ -53,37 +53,41 @@
     >
   {/snippet}
 
-  <div class="flex items-center gap-2 mt-8">
+  <div class="mt-8 flex items-center gap-2">
     {@render filterButton("all", all.length, "All")}
     {@render filterButton("created", created.length, "Created by me")}
   </div>
 
   {#each gatherings as gathering}
     <a
-      class="relative flex flex-col gap-2 overflow-hidden rounded border p-4"
+      class="relative flex overflow-hidden rounded-md border"
       href="/g/{gathering.id}"
     >
-      <span class="bg-primary/20 absolute inset-y-0 left-0 w-1"></span>
-      <span class="font-medium">{gathering.title}</span>
-      {#if gathering.description}<span
-          class="line-clamp-2 text-sm text-neutral-400 dark:text-neutral-600"
-          >{gathering.description}</span
-        >{/if}
-      <div class="flex items-center space-x-2">
-        <span class="text-sm text-neutral-400 dark:text-neutral-600"
-          >Created by</span
-        >
-        <div class="flex items-center space-x-1.5">
-          <Avatar.Root class="size-6">
-            <Avatar.Image
-              src={gathering.creatorPicture}
-              alt={gathering.creatorName}
-            />
-            <Avatar.Fallback class="text-xs"
-              >{gathering.creatorName[0]}</Avatar.Fallback
-            >
-          </Avatar.Root>
-          <span class="text-sm">{gathering.creatorName}</span>
+      <span class="relative w-1.5 flex-none self-stretch">
+        <span class="bg-primary/5 absolute inset-y-0 -right-2 left-0 -z-1"></span>
+      </span>
+      <div class="bg-background flex w-0 grow flex-col gap-2 rounded-md p-4">
+        <span class="font-medium">{gathering.title}</span>
+        {#if gathering.description}<span
+            class="line-clamp-2 text-sm text-neutral-400 dark:text-neutral-600"
+            >{gathering.description}</span
+          >{/if}
+        <div class="flex items-center space-x-2">
+          <span class="text-sm text-neutral-400 dark:text-neutral-600"
+            >Created by</span
+          >
+          <div class="flex items-center space-x-1.5">
+            <Avatar.Root class="size-6">
+              <Avatar.Image
+                src={gathering.creatorPicture}
+                alt={gathering.creatorName}
+              />
+              <Avatar.Fallback class="text-xs"
+                >{gathering.creatorName[0]}</Avatar.Fallback
+              >
+            </Avatar.Root>
+            <span class="truncate text-sm">{gathering.creatorName}</span>
+          </div>
         </div>
       </div>
     </a>
