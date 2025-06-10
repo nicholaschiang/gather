@@ -55,27 +55,23 @@ export async function redirectToGoogle(state: Omit<table.AuthState, "id">) {
   return redirect(302, authUrl)
 }
 
-// TODO: Get this from Google.
-// https://www.googleapis.com/oauth2/v3/certs
-const keys = {
-  keys: [
-    {
-      kty: "RSA",
-      n: "qGs032k_zvMoe1U7O9qC6k-oA1E3Ftz9z37EtjHBZ9sLYfDKPDsOhjS2HQCT69Ms6ET02wE2T9aw6gtjrhqiZPS_ZZhauy8OApqyMFGiJNuuyduUBRRvO_bo2_nE4wxCmDUDHh1wH-Wk04JctHtZA22F42f2n3nGQEQ-6wqSpbjiipwdXv8RQFmo0mObB3mnw1a81d-0kLrpnLeq-Bp0nFb5lJIan2sQOmuyC9r3q-9geM3E4JY6_0Beh4_zEM41c71f0qIfqznORQVpHbOmseH_zS75C91N8__sD7iOeO3zZEUO2LJ3OC_xj75BQf61NTXW_ia_-AoXhMnrGm-ZqQ",
-      use: "sig",
-      e: "AQAB",
-      alg: "RS256",
-      kid: "baa64efc13ef236be921f922e3a67cc99415db9b",
-    },
-    {
-      use: "sig",
-      alg: "RS256",
-      e: "AQAB",
-      kid: "bb43469594451820148b339c588aede305103919",
-      n: "s9s2WkplZRxGVqfBk8o2jvr664mU7bdBB-YesCzBjlHYJetgAt_kKEPEmHmTlget39m02MW_YqDmyu6foDw8xcjnIcXUplHG3klEBHvtctHbP6SYwBiG-5Y3fqyen8JtqstkWXOFfSqVVot7rVSCSwPqtw-zToCXi_47MEuIFALmSLuOzVkk4POHWi7jGrieBxHNcs_xHTKngd0xO4ZpjscYMkdGbBO9-Q_VBEEW3ZtE6Ac34H7f_EF45kGBFSBdyFJjvuYpyXrsNvxZK1pE_snDuStPS95rajzqDhAckTryStCu6uuL02rPifIS-8JFUSceZiSYsbRVGkb5xTbQIQ",
-      kty: "RSA",
-    },
-  ],
+const keySchema = z.object({
+  e: z.string(),
+  kty: z.string(),
+  n: z.string(),
+  use: z.string(),
+  alg: z.string(),
+  kid: z.string(),
+})
+const keysSchema = z.object({ keys: z.array(keySchema) })
+
+async function getGooglePublicKey(): Promise<jwt.PublicKey> {
+  // TODO: Cache the keys and only refetch if decoding fails.
+  const response = await fetch("https://www.googleapis.com/oauth2/v3/certs")
+  const data = keysSchema.parse(await response.json())
+  // TODO: Why do we use the first key from Google? Is it always?
+  const key = { key: data.keys[0], format: "jwk" as const }
+  return key
 }
 
 export async function handleGoogleCallback(event: RequestEvent) {
@@ -112,9 +108,7 @@ export async function handleGoogleCallback(event: RequestEvent) {
 
   if (!tokens.id_token) throw new Error("No ID token found.")
 
-  // TODO: Why do we use the first key from Google? Is it always?
-  const key = { key: keys.keys[0], format: "jwk" as const }
-  const decoded = jwt.verify(tokens.id_token, key)
+  const decoded = jwt.verify(tokens.id_token, await getGooglePublicKey())
   const idToken = idTokenSchema.parse(decoded)
   console.log("decoded", decoded)
   console.log("idToken", idToken)
