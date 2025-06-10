@@ -2,7 +2,7 @@
   import { cn } from "$lib/utils"
   import { type HTMLAttributes } from "svelte/elements"
 
-  export type ShinyTextProps = HTMLAttributes<HTMLDivElement> & {
+  export type ShinyTextProps = HTMLAttributes<HTMLSpanElement> & {
     disabled?: boolean
     speed?: number
   }
@@ -18,13 +18,13 @@
   }: ShinyTextProps = $props()
 </script>
 
-<div
+<span
   {...props}
   class={cn("shiny-text", disabled && "disabled", className)}
   style:animation-duration={`${speed}s`}
 >
   {@render children?.()}
-</div>
+</span>
 
 <style>
   .shiny-text {
