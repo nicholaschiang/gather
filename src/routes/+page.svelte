@@ -41,7 +41,7 @@
     {#each data.friends as friend}
       <a
         class="flex items-center space-x-3 rounded-md border p-3"
-        href="#{friend.id}"
+        href="/new/gathering/{friend.id}"
       >
         <Avatar.Root>
           <Avatar.Image src={friend.picture} alt={friend.name} />
