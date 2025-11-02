@@ -6,9 +6,8 @@ import { eq, or } from "drizzle-orm"
 import { alias } from "drizzle-orm/sqlite-core"
 
 export async function load(event) {
-  if (!event.locals.user) {
-    return redirect(302, "/login")
-  }
+  if (!event.locals.user) return redirect(302, "/login")
+
   const creator = alias(table.user, "creator")
   const gatherings = await db
     .selectDistinct({
