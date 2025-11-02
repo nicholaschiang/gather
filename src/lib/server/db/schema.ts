@@ -12,14 +12,29 @@ export const user = sqliteTable("user", {
     .notNull()
     .default(false),
   googleRefreshToken: text("google_refresh_token").notNull().unique(),
-  createdAt: text("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
-  updatedAt: text("updated_at")
+    .default(sql`(unixepoch())`),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
+    .default(sql`(unixepoch())`),
 })
 export type User = typeof user.$inferSelect
+
+export const relUserFollow = sqliteTable("rel_user_follow", {
+  followerId: text("follower_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  followeeId: text("followee_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`(unixepoch())`),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`(unixepoch())`),
+})
 
 export const session = sqliteTable("session", {
   id: text("id").primaryKey(),
@@ -27,12 +42,12 @@ export const session = sqliteTable("session", {
     .notNull()
     .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
   expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-  createdAt: text("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
-  updatedAt: text("updated_at")
+    .default(sql`(unixepoch())`),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
+    .default(sql`(unixepoch())`),
 })
 export type Session = typeof session.$inferSelect
 
@@ -43,12 +58,12 @@ export const authState = sqliteTable("auth_state", {
     () => gathering.id,
     { onDelete: "set null", onUpdate: "set null" },
   ),
-  createdAt: text("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
-  updatedAt: text("updated_at")
+    .default(sql`(unixepoch())`),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
+    .default(sql`(unixepoch())`),
 })
 export type AuthState = typeof authState.$inferSelect
 
@@ -61,12 +76,12 @@ export const gathering = sqliteTable("gathering", {
   creatorId: text("creator_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  createdAt: text("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
-  updatedAt: text("updated_at")
+    .default(sql`(unixepoch())`),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
+    .default(sql`(unixepoch())`),
 })
 export type Gathering = typeof gathering.$inferSelect
 
@@ -82,12 +97,12 @@ export const relUserGathering = sqliteTable(
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
-    createdAt: text("created_at")
+    createdAt: integer("created_at", { mode: "timestamp" })
       .notNull()
-      .default(sql`(current_timestamp)`),
-    updatedAt: text("updated_at")
+      .default(sql`(unixepoch())`),
+    updatedAt: integer("updated_at", { mode: "timestamp" })
       .notNull()
-      .default(sql`(current_timestamp)`),
+      .default(sql`(unixepoch())`),
   },
   (table) => [primaryKey({ columns: [table.userId, table.gatheringId] })],
 )
