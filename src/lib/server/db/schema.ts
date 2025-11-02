@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm"
 import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core"
 
 export const user = sqliteTable("user", {
@@ -11,6 +12,12 @@ export const user = sqliteTable("user", {
     .notNull()
     .default(false),
   googleRefreshToken: text("google_refresh_token").notNull().unique(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
 })
 export type User = typeof user.$inferSelect
 
@@ -20,6 +27,12 @@ export const session = sqliteTable("session", {
     .notNull()
     .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
   expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
 })
 export type Session = typeof session.$inferSelect
 
@@ -30,6 +43,12 @@ export const authState = sqliteTable("auth_state", {
     () => gathering.id,
     { onDelete: "set null", onUpdate: "set null" },
   ),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
 })
 export type AuthState = typeof authState.$inferSelect
 
@@ -42,6 +61,12 @@ export const gathering = sqliteTable("gathering", {
   creatorId: text("creator_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
 })
 export type Gathering = typeof gathering.$inferSelect
 
@@ -57,6 +82,12 @@ export const relUserGathering = sqliteTable(
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(current_timestamp)`),
+    updatedAt: text("updated_at")
+      .notNull()
+      .default(sql`(current_timestamp)`),
   },
   (table) => [primaryKey({ columns: [table.userId, table.gatheringId] })],
 )
