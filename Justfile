@@ -37,7 +37,7 @@ fix: format check
 # Start the application dev server
 [group('core')]
 dev:
-    pnpm dev
+    pnpm dev --host
 
 # Start the application in preview mode
 [group('core')]
