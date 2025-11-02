@@ -20,6 +20,7 @@ export const user = sqliteTable("user", {
     .default(sql`(unixepoch())`),
 })
 export type User = typeof user.$inferSelect
+export type UserInsert = typeof user.$inferInsert
 
 export const relUserFollow = sqliteTable("rel_user_follow", {
   followerId: text("follower_id")
@@ -50,6 +51,7 @@ export const session = sqliteTable("session", {
     .default(sql`(unixepoch())`),
 })
 export type Session = typeof session.$inferSelect
+export type SessionInsert = typeof session.$inferInsert
 
 export const authState = sqliteTable("auth_state", {
   id: text("id").primaryKey(),
@@ -66,6 +68,7 @@ export const authState = sqliteTable("auth_state", {
     .default(sql`(unixepoch())`),
 })
 export type AuthState = typeof authState.$inferSelect
+export type AuthStateInsert = typeof authState.$inferInsert
 
 export const gathering = sqliteTable("gathering", {
   id: text("id").primaryKey(),
@@ -84,6 +87,7 @@ export const gathering = sqliteTable("gathering", {
     .default(sql`(unixepoch())`),
 })
 export type Gathering = typeof gathering.$inferSelect
+export type GatheringInsert = typeof gathering.$inferInsert
 
 export const relUserGathering = sqliteTable(
   "rel_user_gathering",
