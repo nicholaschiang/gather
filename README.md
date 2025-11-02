@@ -7,15 +7,31 @@ Gather helps find group meeting times (3+ people).
 
 [![UX Flow](./ux-flow.svg)](https://excalidraw.com/#json=3c7OosXrYE4bEfD7PDip1,k7eRZVv6HmHy9ookUG_C5A)
 
+## Terminology
+
+- A `user` is a person.
+- A `user` can follow other `users`.
+- A `user` can have a private account (by default) or a public account.
+- A `user` is friends with another `user` if they both follow each other.
+- A `gathering` is an event with `users`, a title, and a creator.
+
 ## Developing
 
-Once you've installed dependencies with `pnpm install`, start a development server:
+To view all commands provided by our `Justfile`:
 
 ```bash
-pnpm dev
+just
+```
+
+...this includes recipes to generate database migrations, run linters, format code, and more.
+
+Once you've installed dependencies with `just install`, start a development server:
+
+```bash
+just dev
 
 # or start the server and open the app in a new browser tab
-pnpm dev -- --open
+just dev --open
 ```
 
 ## Building
@@ -23,9 +39,9 @@ pnpm dev -- --open
 To create a production version of your app:
 
 ```bash
-pnpm build
+just build
 ```
 
-You can preview the production build with `pnpm preview`.
+You can preview the production build with `just preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
