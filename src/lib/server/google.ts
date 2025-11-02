@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken"
 import { z } from "zod"
 import * as auth from "$lib/server/auth"
 import { v4 as uuid } from "uuid"
+import { JwksClient } from "jwks-rsa"
 
 const idTokenSchema = z.object({
   email: z.string(),
@@ -55,23 +56,35 @@ export async function redirectToGoogle(state: Omit<table.AuthState, "id">) {
   return redirect(302, authUrl)
 }
 
-const keySchema = z.object({
-  e: z.string(),
-  kty: z.string(),
-  n: z.string(),
-  use: z.string(),
-  alg: z.string(),
-  kid: z.string(),
+const jwsClient = new JwksClient({
+  jwksUri: "https://www.googleapis.com/oauth2/v3/certs",
+  requestHeaders: {},
+  timeout: 30000,
 })
-const keysSchema = z.object({ keys: z.array(keySchema) })
 
-async function getGooglePublicKey(): Promise<jwt.PublicKey> {
-  // TODO: Cache the keys and only refetch if decoding fails.
-  const response = await fetch("https://www.googleapis.com/oauth2/v3/certs")
-  const data = keysSchema.parse(await response.json())
-  // TODO: Why do we use the first key from Google? Is it always?
-  const key = { key: data.keys[0], format: "jwk" as const }
-  return key
+function verifyToken(token: string) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(
+      token,
+      (header, callback) => {
+        jwsClient.getSigningKey(header.kid, (error, key) => {
+          if (error) {
+            reject(error)
+          } else {
+            const signingKey = key?.getPublicKey()
+            callback(null, signingKey)
+          }
+        })
+      },
+      (error, decoded) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(decoded)
+        }
+      },
+    )
+  })
 }
 
 export async function handleGoogleCallback(event: RequestEvent) {
@@ -108,7 +121,8 @@ export async function handleGoogleCallback(event: RequestEvent) {
 
   if (!tokens.id_token) throw new Error("No ID token found.")
 
-  const decoded = jwt.verify(tokens.id_token, await getGooglePublicKey())
+  console.log("tokens", tokens)
+  const decoded = await verifyToken(tokens.id_token)
   const idToken = idTokenSchema.parse(decoded)
   console.log("decoded", decoded)
   console.log("idToken", idToken)
