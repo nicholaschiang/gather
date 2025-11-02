@@ -7,7 +7,7 @@
 </script>
 
 <header class="flex items-center justify-between border-b">
-  <h1 class="mx-auto w-full max-w-xl p-4">New Gathering</h1>
+  <h1 class="mx-auto w-full max-w-xl p-4">New gathering</h1>
 </header>
 <form method="POST" use:enhance class="mx-auto max-w-xl space-y-4 p-4">
   <div class="space-y-2">

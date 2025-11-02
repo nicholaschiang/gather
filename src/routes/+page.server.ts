@@ -31,7 +31,20 @@ export async function load(event) {
         eq(table.relUserGathering.userId, event.locals.user.id),
       ),
     )
-  return { user: event.locals.user, gatherings }
+  const friends = await db
+    .selectDistinct({
+      id: table.user.id,
+      name: table.user.name,
+      email: table.user.email,
+      picture: table.user.picture,
+    })
+    .from(table.user)
+    .innerJoin(
+      table.relUserFollow,
+      eq(table.relUserFollow.followeeId, table.user.id),
+    )
+    .where(eq(table.relUserFollow.followerId, event.locals.user.id))
+  return { user: event.locals.user, gatherings, friends }
 }
 
 export const actions = {
