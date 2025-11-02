@@ -28,7 +28,7 @@ const scopes = [
   "https://www.googleapis.com/auth/calendar.readonly",
 ]
 
-export async function redirectToGoogle(state: Omit<table.AuthState, "id">) {
+export async function redirectToGoogle(state: Omit<table.AuthStateInsert, "id">) {
   // Generate a secure random state value.
   // TODO Should I be storing this in a cookie as well?
   const stateId = randomBytes(32).toString("base64url")
@@ -159,6 +159,8 @@ export async function handleGoogleCallback(event: RequestEvent) {
       email: idToken.email,
       emailVerified: idToken.email_verified,
       googleRefreshToken: tokens.refresh_token,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
     await db.insert(table.user).values(user)
 
