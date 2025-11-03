@@ -15,7 +15,7 @@ Gather helps find group meeting times (3+ people).
 
 ## Developing
 
-To view all commands provided by our `Justfile`:
+To view all commands provided by our `Justfile`, simply run:
 
 ```bash
 just
