@@ -14,14 +14,15 @@ upgrade:
 install *FLAGS:
     pnpm install {{FLAGS}}
 
-# Generate SvelteKit route types
+# Generate SvelteKit route types and Paraglide i18n
 [group('core')]
 prepare:
     pnpm svelte-kit sync
+    pnpm paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide
 
 # Run all enforced linters
 [group('core')]
-check: prepare
+check:
     pnpm lint --max-warnings 0 --fix
     pnpm typecheck
 
