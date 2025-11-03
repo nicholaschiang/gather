@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { Button, buttonVariants } from "$lib/components/ui/button"
-  import { ArrowRight, ChevronLeft, ChevronRight } from "@lucide/svelte"
+  import { Button } from "$lib/components/ui/button"
+  import { ChevronLeft, ChevronRight } from "@lucide/svelte"
   import { HEADER_HEIGHT, HOUR_HEIGHT } from "./constants"
   import { enhance } from "$app/forms"
-  import { cn } from "$lib/utils"
-  import { type TimePeriod } from "./+page.server"
 
-  const GATHERING_DURATION_MINS = 30
   const MS_IN_AN_HOUR = 60 * 60 * 1000
   const { data } = $props()
 
@@ -83,7 +80,7 @@
       >
         {timeZoneName}
       </div>
-      {#each hours as hour}
+      {#each hours as hour (hour)}
         {#if hour === 0}
           <div style:height="{HOUR_HEIGHT / 2}px"></div>
         {:else}
@@ -133,7 +130,7 @@
                   </div>
                 </div>
               {/each}
-              {#each data.availableTimes.filter((availableTime) => availableTime.start.getDay() === date.getDay()) as availableTime}
+              {#each data.availableTimes.filter((availableTime) => availableTime.start.getDay() === date.getDay()) as availableTime (availableTime.start.toISOString())}
                 <form
                   style:top="{getEventPosition(availableTime.start)}px"
                   style:height="{getEventHeight(
