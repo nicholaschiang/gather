@@ -9,7 +9,7 @@ export async function load(event) {
     return redirect(302, "/login")
   }
   const search = event.url.searchParams.get("search")
-  if (!search) return { search: "" }
+  if (!search) return { search: "", users: [] }
   const users = await db
     .selectDistinct({
       id: table.user.id,
