@@ -5,8 +5,6 @@ A simple web app to make finding times to meet easier.
 Solutions like Calendly help find 1-1 meeting times.
 Gather helps find group meeting times (3+ people).
 
-[![UX Flow](./ux-flow.svg)](https://excalidraw.com/#json=3c7OosXrYE4bEfD7PDip1,k7eRZVv6HmHy9ookUG_C5A)
-
 ## Terminology
 
 - A `user` is a person.
