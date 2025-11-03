@@ -1,0 +1,48 @@
+name: Migrate
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  migrate:
+    name: Run database migrations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          lfs: false
+
+      - name: Setup just
+        uses: taiki-e/install-action@just
+
+      - name: Get package manager version
+        id: get-pnpm-version
+        run: echo "version=$(cat package.json | jq -r .packageManager | sed s/pnpm@//)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ steps.get-pnpm-version.outputs.version }}
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache-dependency-path: pnpm-lock.yaml
+          cache: pnpm
+
+      - name: Download deps
+        run: just install --frozen-lockfile
+
+      - name: Run database migrations
+        run: just migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN }}
