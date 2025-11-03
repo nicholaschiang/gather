@@ -11,7 +11,7 @@ Gather helps find group meeting times (3+ people).
 - A `user` can follow other `users`.
 - A `user` can have a private account (by default) or a public account.
 - A `user` is friends with another `user` if they both follow each other.
-- A `gathering` is an event with `users`, a title, and a creator.
+- A `gathering` is an event with participants (`user[]`), a title, and a creator (`user`).
 
 ## Developing
 
