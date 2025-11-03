@@ -16,19 +16,19 @@
 
 <main class="mx-auto max-w-xl space-y-8 p-4">
   <div class="space-y-2">
-  <header class="flex justify-between">
-    <ShinyText class="text-2xl font-black">G</ShinyText>
-    <form method="post" action="?/logout" use:enhance>
-      <Button
-        type="submit"
-        variant="ghost"
-        size="sm"
-        class="text-neutral-400 dark:text-neutral-600">Sign out</Button
-      >
-    </form>
-  </header>
-  <h1>Welcome, {data.user.givenName}</h1>
-</div>
+    <header class="flex justify-between">
+      <ShinyText class="text-2xl font-black">G</ShinyText>
+      <form method="post" action="?/logout" use:enhance>
+        <Button
+          type="submit"
+          variant="ghost"
+          size="sm"
+          class="text-neutral-400 dark:text-neutral-600">Sign out</Button
+        >
+      </form>
+    </header>
+    <h1>Welcome, {data.user.givenName}</h1>
+  </div>
 
   <div class="space-y-4">
     <div>
