@@ -33,7 +33,7 @@ format:
 
 # Run all fixers
 [group('core')]
-fix: format check
+fix: prepare format check
 
 # Start the application dev server
 [group('core')]
