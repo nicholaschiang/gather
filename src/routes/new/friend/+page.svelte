@@ -36,7 +36,7 @@
       <Button variant="outline" type="submit">Search</Button>
     </div>
   </form>
-  {#each data.users as user}
+  {#each data.users as user (user.id)}
     <form
       method="POST"
       use:enhance

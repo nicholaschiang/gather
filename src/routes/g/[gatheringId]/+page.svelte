@@ -160,7 +160,7 @@
           {/each}
         {:then times}
           <p>Possible times</p>
-          {#each times.slice(0, 3) as time}
+          {#each times.slice(0, 3) as time (time.start.toISOString())}
             <form method="POST" action="?/time" use:enhance>
               <input
                 type="hidden"
@@ -212,7 +212,7 @@
 
       <ul class="space-y-2">
         {@render person(data.creator, "Creator")}
-        {#each data.attendees as attendee}
+        {#each data.attendees as attendee (attendee.id)}
           {@render person(attendee)}
         {/each}
       </ul>

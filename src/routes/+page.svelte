@@ -38,7 +38,7 @@
       </p>
     </div>
 
-    {#each data.friends as friend}
+    {#each data.friends as friend (friend.id)}
       <a
         class="flex items-center space-x-3 rounded-md border p-3"
         href="/new/gathering/{friend.id}"
@@ -83,7 +83,7 @@
       {@render filterButton("created", created.length, "Created by me")}
     </div>
 
-    {#each gatherings as gathering}
+    {#each gatherings as gathering (gathering.id)}
       <a
         class="relative flex overflow-hidden rounded-md border"
         href="/g/{gathering.id}"

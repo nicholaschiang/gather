@@ -6,7 +6,7 @@
   <p>Loading events...</p>
 {:then events}
   <ul>
-    {#each events as event}
+    {#each events as event (event.id)}
       <li>{event.start?.dateTime ?? event.start?.date} - {event.summary}</li>
     {/each}
   </ul>
