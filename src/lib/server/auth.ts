@@ -32,14 +32,7 @@ export async function validateSessionToken(token: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
   const [result] = await db
     .select({
-      user: {
-        id: table.user.id,
-        email: table.user.email,
-        picture: table.user.picture,
-        name: table.user.name,
-        givenName: table.user.givenName,
-        googleRefreshToken: table.user.googleRefreshToken,
-      },
+      user: table.user,
       session: table.session,
     })
     .from(table.session)
