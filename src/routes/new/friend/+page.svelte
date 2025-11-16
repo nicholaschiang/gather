@@ -12,9 +12,7 @@
 <header class="border-b">
   <div class="mx-auto flex w-full max-w-xl items-center justify-between p-4">
     <h1>Add friend</h1>
-    <Button variant="secondary" href="/" size="icon" class="size-7 rounded-full"
-      ><X /></Button
-    >
+    <Button variant="secondary" href="/" size="icon"><X /></Button>
   </div>
 </header>
 <main class="mx-auto max-w-xl space-y-4 p-4">

@@ -74,7 +74,7 @@
   <!-- Header (with month name) -->
   <header class="flex items-center justify-between space-x-2 border-b p-2">
     <div class="flex items-center space-x-2">
-      <Button href="/" variant="ghost" size="icon" class="size-7 rounded-full">
+      <Button href="/" variant="secondary" size="icon">
         <X />
       </Button>
       <h1 class="text-lg">{month}</h1>
@@ -84,7 +84,6 @@
         href="?{timeMinParamName}={prevTimeMin.toISOString()}"
         variant="ghost"
         size="icon"
-        class="size-7 rounded-full"
       >
         <ChevronLeft />
       </Button>
@@ -92,7 +91,6 @@
         href="?{timeMinParamName}={nextTimeMin.toISOString()}"
         variant="ghost"
         size="icon"
-        class="size-7 rounded-full"
       >
         <ChevronRight />
       </Button>

@@ -49,7 +49,6 @@
           class={buttonVariants({
             variant: "ghost",
             size: "icon",
-            class: "size-7 rounded-full",
           })}
         >
           <MoreHorizontal />
@@ -82,13 +81,10 @@
       variant="ghost"
       onclick={copyShareLink}
       size="icon"
-      class="size-7 rounded-full"
     >
       <Share />
     </Button>
-    <Button variant="secondary" href="/" size="icon" class="size-7 rounded-full"
-      ><X /></Button
-    >
+    <Button variant="secondary" href="/" size="icon"><X /></Button>
   </div>
 </header>
 <main class="space-y-4 px-4 lg:mx-auto lg:max-w-xl">
