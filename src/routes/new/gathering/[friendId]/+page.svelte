@@ -1,8 +1,9 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { ChevronLeft, ChevronRight } from "@lucide/svelte"
+  import { X, ChevronLeft, ChevronRight } from "@lucide/svelte"
   import { HEADER_HEIGHT, HOUR_HEIGHT } from "./constants"
   import { enhance } from "$app/forms"
+  import { timeMinParamName } from "./shared"
 
   const MS_IN_AN_HOUR = 60 * 60 * 1000
   const { data } = $props()
@@ -52,23 +53,50 @@
   const hours = Array(24)
     .fill(null)
     .map((_, index) => index)
+
+  const prevTimeMin = $derived(
+    new Date(
+      data.timeMin.getFullYear(),
+      data.timeMin.getMonth(),
+      data.timeMin.getDate() - 2,
+    ),
+  )
+  const nextTimeMin = $derived(
+    new Date(
+      data.timeMin.getFullYear(),
+      data.timeMin.getMonth(),
+      data.timeMin.getDate() + 2,
+    ),
+  )
 </script>
 
 <main class="flex h-screen w-screen flex-col overflow-hidden">
   <!-- Header (with month name) -->
-  <header class="flex items-center space-x-2 border-b p-2">
-    <Button href="/" variant="ghost" size="icon" class="size-7 rounded-full">
-      <ChevronLeft />
-    </Button>
-    <h1 class="text-lg">{month}</h1>
-    <Button
-      href="/"
-      variant="ghost"
-      size="icon"
-      class="ml-auto size-7 rounded-full"
-    >
-      <ChevronRight />
-    </Button>
+  <header class="flex items-center justify-between space-x-2 border-b p-2">
+    <div class="flex items-center space-x-2">
+      <Button href="/" variant="ghost" size="icon" class="size-7 rounded-full">
+        <X />
+      </Button>
+      <h1 class="text-lg">{month}</h1>
+    </div>
+    <div class="flex items-center">
+      <Button
+        href="?{timeMinParamName}={prevTimeMin.toISOString()}"
+        variant="ghost"
+        size="icon"
+        class="size-7 rounded-full"
+      >
+        <ChevronLeft />
+      </Button>
+      <Button
+        href="?{timeMinParamName}={nextTimeMin.toISOString()}"
+        variant="ghost"
+        size="icon"
+        class="size-7 rounded-full"
+      >
+        <ChevronRight />
+      </Button>
+    </div>
   </header>
 
   <div class="flex h-0 grow overflow-x-hidden overflow-y-auto">

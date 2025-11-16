@@ -6,6 +6,7 @@ import * as table from "$lib/server/db/schema"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 import { eq } from "drizzle-orm"
+import { getTimeMin } from "./shared"
 
 function getCalendar(googleRefreshToken: string): calendar_v3.Calendar {
   // TODO Perhaps we should store the access_token and other values to make this
@@ -130,9 +131,12 @@ export async function load(event) {
   if (!event.locals.user) return redirect(302, "/login")
 
   // We show two days at a time.
-  const now = new Date()
-  const timeMin = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const timeMax = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2)
+  const timeMin = getTimeMin(event.url.searchParams)
+  const timeMax = new Date(
+    timeMin.getFullYear(),
+    timeMin.getMonth(),
+    timeMin.getDate() + 2,
+  )
 
   console.log("timeMin", timeMin.toISOString())
   console.log("timeMax", timeMax.toISOString())
