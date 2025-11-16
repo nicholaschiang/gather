@@ -47,7 +47,9 @@
       </div>
     </div>
     <div class="flex w-full space-x-2">
-      <Button class="w-0 grow" variant="outline">Edit profile</Button>
+      <Button class="w-0 grow" variant="outline" href="/profile"
+        >Edit profile</Button
+      >
       <Button class="w-0 grow" variant="outline" href="/qr"
         >Share profile</Button
       >
