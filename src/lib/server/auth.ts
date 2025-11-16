@@ -35,6 +35,8 @@ export async function validateSessionToken(token: string) {
       user: {
         id: table.user.id,
         email: table.user.email,
+        picture: table.user.picture,
+        name: table.user.name,
         givenName: table.user.givenName,
         googleRefreshToken: table.user.googleRefreshToken,
       },

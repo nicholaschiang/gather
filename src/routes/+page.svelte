@@ -4,6 +4,7 @@
   import { ShinyText } from "$lib/components/ui/shiny-text"
   import * as Avatar from "$lib/components/ui/avatar"
   import { cn } from "$lib/utils"
+  import { QrCode } from "@lucide/svelte"
 
   let { data } = $props()
   let filter = $state<"all" | "created">("all")
@@ -14,26 +15,46 @@
   let gatherings = $derived(filter === "all" ? all : created)
 </script>
 
-<main class="mx-auto max-w-xl space-y-8 p-4">
-  <div class="space-y-2">
-    <header class="flex justify-between">
-      <ShinyText class="text-2xl font-black">G</ShinyText>
-      <form method="post" action="?/logout" use:enhance>
-        <Button
-          type="submit"
-          variant="ghost"
-          size="sm"
-          class="text-neutral-400 dark:text-neutral-600">Sign out</Button
-        >
-      </form>
-    </header>
-    <h1>Welcome, {data.user.givenName}</h1>
-  </div>
+<main class="mx-auto max-w-xl p-4">
+  <header class="flex justify-between">
+    <ShinyText class="text-2xl font-black">G</ShinyText>
+    <form method="post" action="?/logout" use:enhance>
+      <Button
+        type="submit"
+        variant="ghost"
+        size="sm"
+        class="text-neutral-400 dark:text-neutral-600">Sign out</Button
+      >
+    </form>
+  </header>
 
   <div class="space-y-4">
+    <div class="flex flex-col items-center justify-center space-y-2">
+      <a class="relative" href="/qr">
+        <Avatar.Root class="size-20">
+          <Avatar.Image src={data.user.picture} alt={data.user.name} />
+          <Avatar.Fallback class="text-sm">{data.user.name[0]}</Avatar.Fallback>
+        </Avatar.Root>
+        <div
+          class="absolute right-0 bottom-0 flex size-8 items-center justify-center rounded-full border bg-neutral-100 dark:bg-neutral-800"
+        >
+          <QrCode class="size-5" />
+        </div>
+      </a>
+      <h1>{data.user.name}</h1>
+    </div>
+    <div class="flex w-full space-x-2">
+      <Button class="w-0 grow" variant="outline">Edit profile</Button>
+      <Button class="w-0 grow" variant="outline" href="/qr"
+        >Share profile</Button
+      >
+    </div>
+  </div>
+
+  <div class="mt-8 space-y-4">
     <div>
-      <h2 class="text-lg font-medium">Your friends</h2>
-      <p class="text-sm text-neutral-500">
+      <h2 class="text-sm font-medium">Your friends</h2>
+      <p class="text-xs text-neutral-500">
         Click on a friend to create a gathering with them.
       </p>
     </div>
@@ -54,13 +75,13 @@
       </a>
     {/each}
 
-    <Button href="/new/friend">Add friend</Button>
+    <Button href="/new/friend" size="sm">Add friend</Button>
   </div>
 
-  <div class="space-y-4">
+  <div class="mt-12 space-y-4">
     <div>
-      <h2 class="text-lg font-medium">Your gatherings</h2>
-      <p class="text-sm text-neutral-500">Your upcoming and past gatherings.</p>
+      <h2 class="text-sm font-medium">Your gatherings</h2>
+      <p class="text-xs text-neutral-500">Your upcoming and past gatherings.</p>
     </div>
     {#snippet filterButton(
       value: "all" | "created",
@@ -70,9 +91,10 @@
       <Button
         variant="outline"
         class={cn(
-          "rounded-full",
+          "rounded-full text-xs",
           filter === value && "!bg-input/90 !border-primary",
         )}
+        size="sm"
         onclick={() => (filter = value)}
         >{label}<span class="opacity-50">{count}</span></Button
       >
@@ -99,11 +121,11 @@
               >{gathering.description}</span
             >{/if}
           <div class="flex items-center space-x-2">
-            <span class="text-sm text-neutral-400 dark:text-neutral-600"
+            <span class="text-xs text-neutral-400 dark:text-neutral-600"
               >Created by</span
             >
             <div class="flex items-center space-x-1.5">
-              <Avatar.Root class="size-6">
+              <Avatar.Root class="size-5">
                 <Avatar.Image
                   src={gathering.creatorPicture}
                   alt={gathering.creatorName}
@@ -112,13 +134,13 @@
                   >{gathering.creatorName[0]}</Avatar.Fallback
                 >
               </Avatar.Root>
-              <span class="truncate text-sm">{gathering.creatorName}</span>
+              <span class="truncate text-xs">{gathering.creatorName}</span>
             </div>
           </div>
         </div>
       </a>
     {/each}
 
-    <Button href="/new">New</Button>
+    <Button href="/new" size="sm">New</Button>
   </div>
 </main>
