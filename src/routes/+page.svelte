@@ -41,7 +41,10 @@
           <QrCode class="size-5" />
         </div>
       </a>
-      <h1>{data.user.name}</h1>
+      <div class="text-center">
+        <h1>{data.user.name}</h1>
+        <h2 class="text-xs text-neutral-500">{data.user.email}</h2>
+      </div>
     </div>
     <div class="flex w-full space-x-2">
       <Button class="w-0 grow" variant="outline">Edit profile</Button>
