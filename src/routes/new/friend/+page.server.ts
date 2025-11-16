@@ -30,10 +30,22 @@ export const actions = {
     const data = Object.fromEntries(await event.request.formData())
     const form = formSchema.safeParse(data)
     if (!form.success) return fail(400, { form })
-    await db.insert(table.relUserFollow).values({
-      followeeId: form.data.userId,
-      followerId: event.locals.user.id,
-    })
+
+    // Friends are people who follow each other.
+    await db
+      .insert(table.relUserFollow)
+      .values([
+        {
+          followeeId: form.data.userId,
+          followerId: event.locals.user.id,
+        },
+        {
+          followeeId: event.locals.user.id,
+          followerId: form.data.userId,
+        },
+      ])
+      .onConflictDoNothing()
+
     return redirect(302, "/")
   },
 }

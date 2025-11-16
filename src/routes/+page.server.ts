@@ -2,7 +2,7 @@ import * as auth from "$lib/server/auth"
 import { fail, redirect } from "@sveltejs/kit"
 import { db } from "$lib/server/db"
 import * as table from "$lib/server/db/schema"
-import { eq, or } from "drizzle-orm"
+import { eq, or, and } from "drizzle-orm"
 import { alias } from "drizzle-orm/sqlite-core"
 
 export async function load(event) {
@@ -30,6 +30,10 @@ export async function load(event) {
         eq(table.relUserGathering.userId, event.locals.user.id),
       ),
     )
+
+  // Friends are people who follow each other.
+  const f1 = alias(table.relUserFollow, "f1")
+  const f2 = alias(table.relUserFollow, "f2")
   const friends = await db
     .selectDistinct({
       id: table.user.id,
@@ -39,10 +43,20 @@ export async function load(event) {
     })
     .from(table.user)
     .innerJoin(
-      table.relUserFollow,
-      eq(table.relUserFollow.followeeId, table.user.id),
+      f1,
+      and(
+        eq(f1.followeeId, table.user.id),
+        eq(f1.followerId, event.locals.user.id),
+      ),
     )
-    .where(eq(table.relUserFollow.followerId, event.locals.user.id))
+    .innerJoin(
+      f2,
+      and(
+        eq(f2.followeeId, event.locals.user.id),
+        eq(f2.followerId, table.user.id),
+      ),
+    )
+
   return { user: event.locals.user, gatherings, friends }
 }
 

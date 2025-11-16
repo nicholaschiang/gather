@@ -22,20 +22,24 @@ export const user = sqliteTable("user", {
 export type User = typeof user.$inferSelect
 export type UserInsert = typeof user.$inferInsert
 
-export const relUserFollow = sqliteTable("rel_user_follow", {
-  followerId: text("follower_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  followeeId: text("followee_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
-})
+export const relUserFollow = sqliteTable(
+  "rel_user_follow",
+  {
+    followerId: text("follower_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    followeeId: text("followee_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .default(sql`(unixepoch())`),
+    updatedAt: integer("updated_at", { mode: "timestamp" })
+      .notNull()
+      .default(sql`(unixepoch())`),
+  },
+  (table) => [primaryKey({ columns: [table.followerId, table.followeeId] })],
+)
 
 export const session = sqliteTable("session", {
   id: text("id").primaryKey(),
