@@ -2,7 +2,7 @@ import { fail, redirect } from "@sveltejs/kit"
 import { db } from "$lib/server/db"
 import * as table from "$lib/server/db/schema"
 import { z } from "zod"
-import { eq } from "drizzle-orm"
+import { and, eq, not } from "drizzle-orm"
 
 export async function load(event) {
   if (!event.locals.user) {
@@ -18,7 +18,12 @@ export async function load(event) {
       picture: table.user.picture,
     })
     .from(table.user)
-    .where(eq(table.user.email, search))
+    .where(
+      and(
+        eq(table.user.email, search),
+        not(eq(table.user.id, event.locals.user.id)),
+      ),
+    )
   return { search, users }
 }
 
