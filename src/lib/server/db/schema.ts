@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm"
-import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core"
+import { sqliteTable, text, integer, primaryKey, check } from "drizzle-orm/sqlite-core"
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
@@ -38,7 +38,10 @@ export const relUserFollow = sqliteTable(
       .notNull()
       .default(sql`(unixepoch())`),
   },
-  (table) => [primaryKey({ columns: [table.followerId, table.followeeId] })],
+  (table) => [
+    primaryKey({ columns: [table.followerId, table.followeeId] }),
+    check("cannot_follow_self", sql`${table.followerId} != ${table.followeeId}`)
+  ],
 )
 
 export const session = sqliteTable("session", {

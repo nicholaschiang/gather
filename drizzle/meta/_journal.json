@@ -15,6 +15,13 @@
       "when": 1763330286692,
       "tag": "0001_new_captain_britain",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1763330672347,
+      "tag": "0002_light_madrox",
+      "breakpoints": true
     }
   ]
 }
