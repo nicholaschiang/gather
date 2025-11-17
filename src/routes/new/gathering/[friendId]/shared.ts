@@ -1,4 +1,4 @@
-export const timeMinParamName = 't'
+export const timeMinParamName = "t"
 
 export function getTimeMin(searchParams: URLSearchParams): Date {
   const t = new Date(searchParams.get(timeMinParamName) ?? new Date())

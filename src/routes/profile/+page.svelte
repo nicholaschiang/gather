@@ -41,7 +41,9 @@
       disabled
       readonly
     />
-    <p class="text-xs text-neutral-500">To change your email, log out and log in with the other email.</p>
+    <p class="text-xs text-neutral-500">
+      To change your email, log out and log in with the other email.
+    </p>
   </div>
   <div class="flex items-center justify-end space-x-2">
     <Button href="/" variant="ghost">Cancel</Button>

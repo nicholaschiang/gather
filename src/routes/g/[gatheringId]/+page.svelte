@@ -77,11 +77,7 @@
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     {/if}
-    <Button
-      variant="ghost"
-      onclick={copyShareLink}
-      size="icon"
-    >
+    <Button variant="ghost" onclick={copyShareLink} size="icon">
       <Share />
     </Button>
     <Button variant="secondary" href="/" size="icon"><X /></Button>
