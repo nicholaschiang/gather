@@ -11,6 +11,7 @@ import { z } from "zod"
 import * as auth from "$lib/server/auth"
 import { v4 as uuid } from "uuid"
 import { JwksClient } from "jwks-rsa"
+import { createFriendship } from "./friend"
 
 const idTokenSchema = z.object({
   email: z.string(),
@@ -177,6 +178,10 @@ export async function handleGoogleCallback(event: RequestEvent) {
       userId: user.id,
       gatheringId: state.gatheringIdToJoin,
     })
+  }
+
+  if (state.userIdToFriend) {
+    await createFriendship(user.id, state.userIdToFriend)
   }
 
   return redirect(302, state.redirectUrl)

@@ -1,0 +1,1 @@
+ALTER TABLE `auth_state` ADD `user_id_to_friend` text REFERENCES user(id);

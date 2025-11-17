@@ -220,7 +220,7 @@
 
   <div class="gradient">
     <div
-      class="mx-8 my-16 flex flex-col items-center space-y-6 rounded-md border bg-neutral-50/50 p-8 text-center backdrop-blur dark:bg-neutral-900/50"
+      class="mx-8 my-16 flex flex-col items-center space-y-6 rounded-lg border bg-neutral-50/50 p-8 text-center backdrop-blur dark:bg-neutral-900/50"
     >
       {#if user && data.gathering.creatorId === user.id}
         <div>You created this gathering.</div>
@@ -246,69 +246,6 @@
 </main>
 
 <style>
-  :root {
-    --gradient-color-1: 215, 98%, 61%;
-    --gradient-color-2: 256, 98%, 72%;
-    --gradient-color-3: 354, 98%, 61%;
-    --gradient-color-4: 133, 96%, 67%;
-    --gradient-color-5: 38, 60%, 74%;
-    --gradient-color-6: 222, 67%, 73%;
-    --gradient-color-7: 343, 68%, 79%;
-  }
-
-  .gradient {
-    position: relative;
-
-    &:after {
-      background-image:
-        radial-gradient(
-          at 27% 37%,
-          hsla(var(--gradient-color-1), 1) 0px,
-          transparent 50%
-        ),
-        radial-gradient(
-          at 97% 21%,
-          hsla(var(--gradient-color-2), 1) 0px,
-          transparent 50%
-        ),
-        radial-gradient(
-          at 52% 99%,
-          hsla(var(--gradient-color-3), 1) 0px,
-          transparent 50%
-        ),
-        radial-gradient(
-          at 10% 29%,
-          hsla(var(--gradient-color-4), 1) 0px,
-          transparent 50%
-        ),
-        radial-gradient(
-          at 97% 96%,
-          hsla(var(--gradient-color-5), 1) 0px,
-          transparent 50%
-        ),
-        radial-gradient(
-          at 33% 50%,
-          hsla(var(--gradient-color-6), 1) 0px,
-          transparent 50%
-        ),
-        radial-gradient(
-          at 79% 53%,
-          hsla(var(--gradient-color-7), 1) 0px,
-          transparent 50%
-        );
-      position: absolute;
-      content: "";
-      width: 100%;
-      height: 100%;
-      filter: blur(20px) saturate(150%);
-      z-index: -1;
-      top: 0;
-      left: 0;
-      opacity: 0.2;
-      transform: translateZ(0);
-    }
-  }
-
   .gradient-border {
     --gradient-border-radius: var(--radius-md);
     position: relative;

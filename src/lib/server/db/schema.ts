@@ -76,6 +76,10 @@ export const authState = sqliteTable("auth_state", {
     () => gathering.id,
     { onDelete: "set null", onUpdate: "set null" },
   ),
+  userIdToFriend: text("user_id_to_friend").references(() => user.id, {
+    onDelete: "set null",
+    onUpdate: "set null",
+  }),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`(unixepoch())`),

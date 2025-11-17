@@ -3,6 +3,7 @@ import { db } from "$lib/server/db"
 import * as table from "$lib/server/db/schema"
 import { z } from "zod"
 import { and, eq, not } from "drizzle-orm"
+import { createFriendship } from "$lib/server/friend"
 
 export async function load(event) {
   if (!event.locals.user) {
@@ -35,22 +36,7 @@ export const actions = {
     const data = Object.fromEntries(await event.request.formData())
     const form = formSchema.safeParse(data)
     if (!form.success) return fail(400, { form })
-
-    // Friends are people who follow each other.
-    await db
-      .insert(table.relUserFollow)
-      .values([
-        {
-          followeeId: form.data.userId,
-          followerId: event.locals.user.id,
-        },
-        {
-          followeeId: event.locals.user.id,
-          followerId: form.data.userId,
-        },
-      ])
-      .onConflictDoNothing()
-
+    await createFriendship(event.locals.user.id, form.data.userId)
     return redirect(302, "/")
   },
 }
