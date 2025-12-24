@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import { cn } from "$lib/utils"
-  import { type HTMLAttributes } from "svelte/elements"
+  import type { HTMLAttributes } from "svelte/elements"
 
   export type ShinyTextProps = HTMLAttributes<HTMLSpanElement> & {
     disabled?: boolean
